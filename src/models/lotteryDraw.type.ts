@@ -1,6 +1,6 @@
 export interface LotteryDraw {
   id?: string;
-  draw_date: Date | string;
+  date: Date | string;
   folio: number;
   letters: string;
   prizes: {
@@ -9,6 +9,6 @@ export interface LotteryDraw {
     third: string;
   };
   serie: number;
-  draw_number: number;
+  number: number;
   type: string;
 }

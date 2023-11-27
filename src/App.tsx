@@ -98,7 +98,6 @@ function App() {
   return (
     <>
       <section className='max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded divide-y-2 divide-gray-300'>
-        <h1 className='text-2xl text-center font-bold pb-1'>Lottery</h1>
         <Formik initialValues={initialValues} validate={validate} onSubmit={handleSubmit}>
           {({ isSubmitting }) => (
             <Form>
@@ -146,6 +145,7 @@ function App() {
                       id='prizes.first'
                       maxLength={4}
                       placeholder='0'
+                      inputMode='numeric'
                       className='input'
                     />
                     <ErrorMessage name='prizes.first' component='div' className='inputErrorMessage' />
@@ -160,6 +160,7 @@ function App() {
                     required
                     maxLength={4}
                     placeholder='0'
+                    inputMode='numeric'
                     className='input'
                   />
                   <ErrorMessage name='prizes.second' component='div' className='inputErrorMessage' />
@@ -174,6 +175,7 @@ function App() {
                     required
                     maxLength={4}
                     placeholder='0'
+                    inputMode='numeric'
                     className='input'
                   />
                   <ErrorMessage name='prizes.third' component='div' className='inputErrorMessage' />

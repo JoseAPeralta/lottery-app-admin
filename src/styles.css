@@ -10,9 +10,13 @@
   @apply text-sm bg-red-400 text-gray-100 p-2 rounded-md -mt-3;
 }
 .btn {
-  @apply text-xl mt-4 bg-blue-500 text-white p-3 rounded;
+  @apply mt-4 bg-blue-500 text-white p-3 rounded;
 }
 
 .btn:disabled {
   @apply bg-blue-200 text-white p-3 cursor-not-allowed;
+}
+
+.fixCenter {
+  @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50;
 }

@@ -18,7 +18,9 @@ const Alert = ({ message, type, onClose }: alertTypes) => {
         <>
           <div className='fixed inset-0 bg-cover backdrop-blur-[2px] '></div>
           <div
-            className={`fixCenter p-8 mb-4 rounded text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} `}
+            className={`fixCenter max-w-full p-8 mb-4 rounded text-white ${
+              type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } `}
             role='alert'
           >
             <p className='text-2xl'>{message}</p>

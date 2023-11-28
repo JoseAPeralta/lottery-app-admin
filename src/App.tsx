@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { LotteryDraw } from '@/models';
-
+import { Alert } from '@/components';
 type FormErrors = {
   w_date?: string;
   folio?: string;
@@ -15,6 +16,9 @@ type FormErrors = {
   type?: string;
 };
 function App() {
+  const initialAlert = { message: '', visible: false, type: 'success' };
+  const [alert, setAlert] = useState(initialAlert);
+
   const dataTransform = (values: LotteryDraw): void => {
     values.letters = values.letters.toUpperCase();
     values.date = new Date(values.date).toISOString();
@@ -73,6 +77,7 @@ function App() {
 
   const handleSubmit = async (values: LotteryDraw, { setSubmitting, resetForm }: FormikHelpers<LotteryDraw>) => {
     dataTransform(values);
+
     try {
       const apiUrl = 'https://us-east-1.aws.data.mongodb-api.com/app/data-llcjw/endpoint/lotteryDraws';
 
@@ -87,9 +92,20 @@ function App() {
       const responseData = await response.json();
 
       console.log('Respuesta de la API:', responseData);
+      setAlert({
+        message: `¡Formulario enviado con éxito! \n ${JSON.stringify(responseData)}`,
+        visible: true,
+        type: 'success',
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Error al enviar a la API:', error.message);
+      setAlert({
+        message: `Ocurrió un error al enviar el formulario. \n ${JSON.stringify(error)}`,
+        visible: true,
+        type: 'error',
+      });
     }
     setSubmitting(false);
     resetForm();
@@ -98,7 +114,12 @@ function App() {
   return (
     <>
       <section className='max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded divide-y-2 divide-gray-300'>
-        <Formik initialValues={initialValues} validate={validate} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={initialValues}
+          initialStatus={{ message: 'hola caracola', visible: false, type: 'success' }}
+          validate={validate}
+          onSubmit={handleSubmit}
+        >
           {({ isSubmitting }) => (
             <Form>
               <div>
@@ -108,7 +129,6 @@ function App() {
                 <Field type='date' id='date' name='date' required className='input' />
                 <ErrorMessage name='date' component='div' className='inputErrorMessage' />
               </div>
-
               <div className='flex gap-2'>
                 <div className='w-1/2'>
                   <label htmlFor='type' className='label'>
@@ -130,7 +150,6 @@ function App() {
                   <ErrorMessage name='number' component='div' className='inputErrorMessage' />
                 </div>
               </div>
-
               <div>
                 <p className='pb-4 pt-4'>Prizes:</p>
                 <div className='pl-5'>
@@ -181,7 +200,6 @@ function App() {
                   <ErrorMessage name='prizes.third' component='div' className='inputErrorMessage' />
                 </div>
               </div>
-
               <div className='flex gap-2 pt-4'>
                 <div className='w-1/3'>
                   <label htmlFor='letters' className='label'>
@@ -229,10 +247,13 @@ function App() {
                   <ErrorMessage name='serie' component='div' className='inputErrorMessage' />
                 </div>
               </div>
-
-              <button type='submit' disabled={isSubmitting} className='btn w-full '>
+              <button type='submit' disabled={isSubmitting} className='btn text-xl w-full '>
                 {isSubmitting ? 'Sending...' : 'Submit'}
               </button>
+
+              {alert.visible && (
+                <Alert message={alert.message} type={alert.type} onClose={() => setAlert(initialAlert)} />
+              )}
             </Form>
           )}
         </Formik>
